@@ -7,8 +7,7 @@ export default function AppContainer({children}: {children: React.ReactNode}) {
             <Box
                 component="main"
                 w="100vw"
-                h="100vh"
-                // maw={600}
+                h="100dvh"
             >
                 {children}
             </Box>

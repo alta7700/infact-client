@@ -19,7 +19,7 @@ export default function FactsStagePage() {
                         <Textarea
                             w="100%"
                             size="lg"
-                            placeholder="В меня стреляли, но я не сдался!"
+                            placeholder="Меня расстреляли, но я не сдался!"
                             value={text} onChange={e => setText(e.target.value)}
                         />
                         <Button

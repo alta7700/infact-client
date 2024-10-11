@@ -2,6 +2,7 @@ import {useState} from "react";
 import {Avatar, AvatarGroup, Checkbox, Drawer, Flex, Group, Paper, Text} from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
 import {useGameContext} from "../gameService/GameContext.tsx";
+import {getAvatarUrl} from "../utils.ts";
 
 export interface FactCardProps {
     fact: Fact;
@@ -31,7 +32,7 @@ export default function FactCard({fact, candidates, onClick, error}: FactCardPro
                 >{fact.text}</Text>
                 <AvatarGroup>
                     {candidates.length === 1 ? (
-                        <Avatar name={candidates[0].name} color="initials"/>
+                        <Avatar name={candidates[0].name} color="initials" src={candidates[0].photo && getAvatarUrl(candidates[0].photo)}/>
                     ) : (
                         <Avatar name={candidates.length === 0 ? "?" : `+${candidates.length}`}/>
                     )}
@@ -79,7 +80,7 @@ function FactCardWithCandidates({drawerTitle, fact, candidates, error}: Omit<Fac
                         >
                             <Flex direction="row" gap="md" align="center" p={10}>
                                 <Checkbox.Indicator/>
-                                <Avatar name={p.name} color="initials" size="md"/>
+                                <Avatar name={p.name} color="initials" src={p.photo && getAvatarUrl(p.photo)} size="md"/>
                                 <Text size="md">{p.name}</Text>
                             </Flex>
                         </Checkbox.Card>
