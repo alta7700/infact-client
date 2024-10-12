@@ -3,6 +3,7 @@ import {useNavigate, useSearchParams} from "react-router-dom";
 import {Text, TextInput, PinInput, Center, Stack, Box, Button} from "@mantine/core";
 import {notifications} from "@mantine/notifications";
 import AppContainer from "../components/AppContainer";
+import {getUserTgName} from "../utils";
 
 export default function HomePage() {
 
@@ -10,10 +11,9 @@ export default function HomePage() {
 
     const [code, setCode] = useState<string>("");
     const [codeDirty, setCodeDirty] = useState<boolean>(false);
-    const [name, setName] = useState<string>(search.get("name") ?? "");
+    const [name, setName] = useState<string>(search.get("name") ?? getUserTgName() ?? "");
     const [nameDirty, setNameDirty] = useState<boolean>(false);
 
-    const userId = Number(search.get("id") ?? undefined);
     const codeIsValid = code.length === 4;
     const nameIsValid = name.length >= 3;
 
@@ -46,16 +46,16 @@ export default function HomePage() {
                         />
                     </Box>
                     <Button
-                        disabled={Number.isNaN(userId) || !codeIsValid || !nameIsValid}
+                        disabled={!codeIsValid || !nameIsValid}
                         onClick={() => {
-                            navigate(`/${code}?id=${userId}&name=${name}`);
+                            navigate(`/${code}?&name=${name}`);
                         }}
                     >Подключиться к комнате</Button>
                     <Button
-                        disabled={Number.isNaN(userId) || !nameIsValid}
+                        disabled={!nameIsValid}
                         onClick={() => {
                             fetch(
-                                import.meta.env.VITE_SERVER_BASE_URL + "/infact/new",
+                                import.meta.env.VITE_SERVER_BASE_URL + "/new",
                                 {method: "POST"}
                             ).then(res => {
                                 if (res.status === 200) return res.text();
@@ -65,8 +65,13 @@ export default function HomePage() {
                                 });
                             }).then(code => {
                                 if (code) {
-                                    navigate(`/${code}?id=${userId}&name=${name}`);
+                                    navigate(`/${code}?&name=${name}`);
                                 }
+                            }).catch(() => {
+                                notifications.show({
+                                    message: "Произошла непредвиденная ошибка",
+                                    color: "var(--mantine-color-error)",
+                                });
                             });
                         }}
                     >Создать комнату</Button>

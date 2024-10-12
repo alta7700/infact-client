@@ -13,6 +13,7 @@ import {
 import {useGameContext} from "../../gameService/GameContext.tsx";
 import StageContainer from "../../components/StageContainer.tsx";
 import {useDisclosure} from "@mantine/hooks";
+import {getAvatarUrl} from "../../utils.ts";
 
 export default function FinalStagePage() {
     const {state} = useGameContext("final");
@@ -61,14 +62,30 @@ export default function FinalStagePage() {
                                     <Text flex={1}>{fact.text}</Text>
                                     <AvatarGroup>
                                         {guesses.guessedBy.length <= 4 ? (
-                                            guesses.guessedBy.map(playerId =>
-                                                <Avatar name={state.players.find(p => p.id === playerId)!.name} color="initials"/>
-                                            )
+                                            guesses.guessedBy.map(playerId => {
+                                                const player = state.players.find(p => p.id === playerId)!;
+                                                return (
+                                                    <Avatar
+                                                        key={player.id}
+                                                        name={player.name}
+                                                        color="initials"
+                                                        src={player.photo && getAvatarUrl(player.photo)}
+                                                    />
+                                                )
+                                            })
                                         ) : (
                                             <>
-                                                <Avatar name={state.players.find(p => p.id === guesses.guessedBy[0])!.name} color="initials"/>
-                                                <Avatar name={state.players.find(p => p.id === guesses.guessedBy[1])!.name} color="initials"/>
-                                                <Avatar name={state.players.find(p => p.id === guesses.guessedBy[2])!.name} color="initials"/>
+                                                {[0, 1, 2].map(i => {
+                                                    const player = state.players.find(p => p.id === guesses.guessedBy[i])!;
+                                                    return (
+                                                        <Avatar
+                                                            key={player.id}
+                                                            name={player.name}
+                                                            color="initials"
+                                                            src={player.photo && getAvatarUrl(player.photo)}
+                                                        />
+                                                    )
+                                                })}
                                                 <Avatar name={`+${guesses.guessedBy.length - 3}`}/>
                                             </>
                                         )}

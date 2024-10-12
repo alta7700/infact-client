@@ -34,7 +34,7 @@ export default class ClientWebSocketTransport implements ITransport {
     connect() {
         this.waitedActions = {};
 
-        const url = new URL(import.meta.env.VITE_SERVER_BASE_URL + "/infact");
+        const url = new URL(import.meta.env.VITE_SERVER_BASE_URL);
         url.searchParams.append("id", this.userId.toString());
         url.searchParams.append("name", this.userName);
         url.searchParams.append("room", this.room.toUpperCase());

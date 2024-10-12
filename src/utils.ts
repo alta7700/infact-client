@@ -10,7 +10,7 @@ export function getRandomString(
     return res;
 }
 
-export class SimpleHandler<D extends any[]> {
+export class SimpleHandler<D extends unknown[]> {
     private handlers: ((...data: D) => void)[];
 
     constructor() {
@@ -28,4 +28,19 @@ export class SimpleHandler<D extends any[]> {
     handle(...data: D) {
         this.handlers.forEach(h => h(...data));
     }
+}
+
+export function getUserTgName(): string | null {
+    const user = Telegram.WebApp.initDataUnsafe.user;
+    if (!user) return null;
+    return ((`${user.first_name} ${user.last_name}`).trim() || user.username) ?? null;
+}
+
+export function getUserTgId(): number | null {
+    const id = Number(window.Telegram?.WebApp?.initDataUnsafe?.user?.id);
+    return Number.isNaN(id) ? null : id;
+}
+
+export function getAvatarUrl(fileId: string): string {
+    return `${import.meta.env.VITE_SERVER_BASE_URL}/avatars/${fileId}`;
 }

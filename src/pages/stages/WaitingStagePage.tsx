@@ -2,6 +2,7 @@ import {Avatar, Button, Center, Grid, Indicator, rem, ScrollArea, Text} from "@m
 import {IconCheck, IconCrown, IconX} from "@tabler/icons-react";
 import {useGameContext} from "../../gameService/GameContext";
 import StageContainer from "../../components/StageContainer.tsx";
+import {getAvatarUrl} from "../../utils.ts";
 
 export default function WaitingStagePage() {
     const {state, isLeader, service} = useGameContext("waiting");
@@ -37,6 +38,7 @@ export default function WaitingStagePage() {
                                             name={player.name}
                                             color="initials"
                                             size="xl"
+                                            src={player.photo && getAvatarUrl(player.photo)}
                                         />
                                     </Indicator>
                                 </Center>
