@@ -28,7 +28,7 @@ export default function RoomPage() {
     }, [id, name, room, navigate]);
 
     if (id === null || !name || !(room && room.length === 4)) {
-        return <></>
+        return <></>;
     }
 
     return (
@@ -37,5 +37,5 @@ export default function RoomPage() {
                 <StagePage/>
             </GameContextProvider>
         </AppContainer>
-    )
+    );
 }

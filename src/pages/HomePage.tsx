@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import {Text, TextInput, PinInput, Center, Stack, Box, Button} from "@mantine/core";
 import {notifications} from "@mantine/notifications";
@@ -9,7 +9,7 @@ export default function HomePage() {
 
     const [search] = useSearchParams();
 
-    const [code, setCode] = useState<string>("");
+    const [code, setCode] = useState<string>(Telegram.WebApp.initDataUnsafe.start_param?.slice(0, 4).toUpperCase() ?? "");
     const [codeDirty, setCodeDirty] = useState<boolean>(false);
     const [name, setName] = useState<string>(search.get("name") ?? getUserTgName() ?? "");
     const [nameDirty, setNameDirty] = useState<boolean>(false);
@@ -18,16 +18,6 @@ export default function HomePage() {
     const nameIsValid = name.length >= 3;
 
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const searchCopy = new URLSearchParams(search.toString());
-        if (searchCopy.has("room")) {
-            const initRoom = searchCopy.get("room");
-            searchCopy.delete("room");
-            navigate(`/${initRoom}?${searchCopy.toString()}`);
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     return (
         <AppContainer>

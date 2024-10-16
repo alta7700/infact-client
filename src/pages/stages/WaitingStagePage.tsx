@@ -1,8 +1,10 @@
-import {Avatar, Button, Center, Grid, Indicator, rem, ScrollArea, Text} from "@mantine/core";
+import {Avatar, Box, Button, Center, Collapse, Grid, Indicator, rem, ScrollArea, Text} from "@mantine/core";
 import {IconCheck, IconCrown, IconX} from "@tabler/icons-react";
 import {useGameContext} from "../../gameService/GameContext";
 import StageContainer from "../../components/StageContainer.tsx";
 import {getAvatarUrl} from "../../utils.ts";
+import {QRCodeCanvas} from "qrcode.react";
+import {useDisclosure} from "@mantine/hooks";
 
 export default function WaitingStagePage() {
     const {state, isLeader, service} = useGameContext("waiting");
@@ -10,8 +12,21 @@ export default function WaitingStagePage() {
     const allAreReady = state.players.every(p => p.id === state.leaderId || state.readyPlayers.includes(p.id))
     const isReady = state.readyPlayers.includes(state.ownId);
 
+    const [showQR, {toggle: toggleQR}] = useDisclosure(false);
+
     return (
         <StageContainer roomCode={state.roomCode}>
+            <Button onClick={toggleQR} my={10} w="min-content" mx="auto">QR для подключения</Button>
+            <Collapse in={showQR}>
+                <Box px="20%">
+                    <QRCodeCanvas
+                        size={800}
+                        style={{width: "100%", height: "100%"}}
+                        value={`${import.meta.env.VITE_GAME_URL}?startapp=QWER`}
+                        level="L"
+                    />
+                </Box>
+            </Collapse>
             <ScrollArea flex={1}>
                 <Grid columns={2} pt={15} px={15}>
                     {state.players.map((player) => {
