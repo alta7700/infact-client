@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import {Text, TextInput, PinInput, Center, Stack, Box, Button} from "@mantine/core";
 import {notifications} from "@mantine/notifications";
@@ -18,6 +18,16 @@ export default function HomePage() {
     const nameIsValid = name.length >= 3;
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const searchCopy = new URLSearchParams(search.toString());
+        if (searchCopy.has("room")) {
+            const initRoom = searchCopy.get("room");
+            searchCopy.delete("room");
+            navigate(`/${initRoom}?${searchCopy.toString()}`);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <AppContainer>
