@@ -22,8 +22,8 @@ export default function WaitingStagePage() {
                     <QRCodeCanvas
                         size={800}
                         style={{width: "100%", height: "100%"}}
-                        value={`${import.meta.env.VITE_GAME_URL}?startapp=QWER`}
-                        level="L"
+                        value={`${import.meta.env.VITE_GAME_URL}?startapp=${state.roomCode}`}
+                        level="M"
                     />
                 </Box>
             </Collapse>
